@@ -1,0 +1,6 @@
+content   quick-ticket-to-redmine                 chrome/content/
+skin      quick-ticket-to-redmine   classic/1.0   chrome/skin/
+locale    quick-ticket-to-redmine   en-US         chrome/locale/en-US/
+locale    quick-ticket-to-redmine   ja-JP         chrome/locale/ja-JP/
+overlay chrome://messenger/content/messenger.xul chrome://quick-ticket-to-redmine/content/contextmenu-overlay.xul
+

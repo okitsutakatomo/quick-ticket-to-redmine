@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
+<!DOCTYPE prefwindow SYSTEM "chrome://quick-ticket-to-redmine/locale/application.dtd">
+
+<prefwindow id="quick-ticket-to-redmine-preferences"
+  type="child"
+  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+  title="&prefwindow.title;"
+  ondialogaccept="return options.doOK();"
+  ondialogcancel="return options.doCancel();"
+  onload="options.onLoad();">
+
+  <script type="application/javascript" src="chrome://global/content/nsUserSettings.js"/>
+  <script type="application/javascript" src="chrome://quick-ticket-to-redmine/content/utils.js"/>
+  <script type="application/javascript" src="chrome://quick-ticket-to-redmine/content/options.js"/>
+
+  <stringbundleset id="stringbundleset">
+    <stringbundle id="CSBundle" src="chrome://quick-ticket-to-redmine/locale/application.properties"/> 
+  </stringbundleset>
+
+  <broadcasterset>
+    <broadcaster id="isApi"/>
+    <broadcaster id="isBasic"/>
+  </broadcasterset>
+
+  <prefpane id="pane1" label="&prefwindow.url.label;">
+    <preferences>
+      <preference id="redmineurlpref" name="extensions.quick-ticket-to-redmine.redmineurlpref" type="string"/>
+      <preference id="redmineacceskeypref" name="extensions.quick-ticket-to-redmine.redmineacceskeypref" type="string"/>
+      <preference id="authmethod" name="extensions.quick-ticket-to-redmine.authmethod" type="int"/>
+    </preferences>
+    <vbox>
+      <groupbox>
+        <caption label="&prefwindow.url.label;"/>
+        <vbox>
+          <label>&prefwindow.url.urllabel;</label>
+          <textbox id="redmineurl_textbox" preference="redmineurlpref"/>
+          <label value="&prefwindow.url.example;"/>
+          <label style="width:400px;">&prefwindow.url.notice;</label>
+        </vbox>
+      </groupbox>
+    </vbox>
+    <spacer style="height:1.0em;"/>
+    <vbox>
+      <groupbox>
+        <caption label="&prefwindow.auth.label;"/>
+        <radiogroup id="auth-radiogroup" preference="authmethod">
+          <vbox id="api-vbox">
+            <radio id="api-radio" label="&prefwindow.auth.apilabel;" value="0" disabled="true"/>
+            <textbox id="redmineacceskey_textbox" preference="redmineacceskeypref" observes="isApi"/>
+            <label value="&prefwindow.auto.example;" observes="isApi"/>
+          </vbox>
+
+          <separator class="groove" id="event-grid-basic-separator"/>
+
+          <vbox id="basic-vbox">
+            <radio id="basic-radio" label="&prefwindow.auth.basiclabel;" value="1"/>
+          </vbox>
+        </radiogroup>
+      </groupbox>
+    </vbox>
+  </prefpane>
+
+</prefwindow>

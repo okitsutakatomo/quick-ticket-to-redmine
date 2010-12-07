@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?xml-stylesheet type="text/css" href="chrome://global/skin/global.css"?>
+<!DOCTYPE dialog SYSTEM "chrome://quick-ticket-to-redmine/locale/application.dtd">
+<dialog id="ticket-dialog"
+  title="&ticket-dialog.dialog-title;"
+  onload="ticketDialog.onLoad()"
+  buttons="accept,cancel"
+  ondialogaccept="return ticketDialog.onAccept();"
+  ondialogcancel="return ticketDialog.onCancel();"
+  buttonlabelaccept="&ticket-dialog.accept;"
+  buttonlabelcancel="&ticket-dialog.cancel;"
+  persist="screenX screenY width height"
+  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <!-- Javascript includes -->
+  <script type="application/javascript" src="chrome://global/content/nsUserSettings.js"/>
+  <script type="application/javascript" src="chrome://quick-ticket-to-redmine/content/utils.js"/>
+  <script type="application/javascript" src="chrome://quick-ticket-to-redmine/content/ticket.js"/>
+  <script type="application/javascript" src="chrome://quick-ticket-to-redmine/content/options.js"/>
+  <script type="application/javascript" src="chrome://quick-ticket-to-redmine/content/ticket-dialog.js"/>
+  <script type="application/javascript" src="chrome://quick-ticket-to-redmine/content/ticket-done-dialog.js"/>
+
+  <stringbundleset id="stringbundleset">
+    <stringbundle id="CSBundle" src="chrome://quick-ticket-to-redmine/locale/application.properties"/> 
+  </stringbundleset>
+
+  <broadcasterset>
+    <broadcaster id="endDateBroadcast" disabled="true"/>
+  </broadcasterset>
+
+  <notificationbox id="notificationbox">
+  </notificationbox>
+
+  <grid style="padding-top: 8px; -moz-padding-start: 8px; ">
+    <columns>
+      <column/>
+      <column flex="1"/>
+    </columns>
+
+    <rows>
+      <row align="center">
+        <label control="title-box" value="&ticket-dialog.title;:"/>
+        <textbox id="title-box" flex="1"/>
+      </row>
+
+      <separator class="groove" id="event-grid-basic-separator"/>
+
+      <row align="center">
+        <label control="project-box" value="&ticket-dialog.project;:"/>
+        <hbox id="project-box" flex="1">
+          <menulist id="project-list"
+            width="300"
+            disable-on-readonly="true">
+            <menupopup></menupopup>
+          </menulist>
+          <hbox align="center">
+            <image src="chrome://quick-ticket-to-redmine/skin/loading.gif" id="project-loading" width="16" height="16"/>
+          </hbox>
+        </hbox>
+      </row>
+
+      <row align="center">
+        <label control="tracker-box" value="&ticket-dialog.tracker;:"/>
+        <hbox id="tracker-box" flex="1">
+          <menulist id="tracker-list"
+            width="300"
+            disable-on-readonly="true">
+            <menupopup></menupopup>
+          </menulist>
+          <hbox align="center">
+            <image src="chrome://quick-ticket-to-redmine/skin/loading.gif" id="tracker-loading" width="16" height="16"/>
+          </hbox>
+        </hbox>
+      </row>
+
+      <row align="center">
+        <label control="assigned-to-box" value="&ticket-dialog.assigned-to;:"/>
+        <hbox id="assigned-to-box" flex="1">
+          <menulist id="assigned-to-list"
+            width="300"
+            disable-on-readonly="true">
+            <menupopup></menupopup>
+          </menulist>
+          <hbox align="center">
+            <image src="chrome://quick-ticket-to-redmine/skin/loading.gif" id="assigned-to-loading" width="16" height="16"/>
+          </hbox>
+        </hbox>
+      </row>
+
+      <row align="center">
+        <label control="start-date-box" value="&ticket-dialog.start-date;:"/>
+        <hbox flex="1" align="center">
+          <checkbox checked="true" disabled="true"/> 
+          <datepicker id="start-date-box" type="popup"/>
+          <spacer style="width:2.0em;"/>
+          <label control="end-date-box" value="&ticket-dialog.end-date;:"/>
+          <checkbox id="end-date-checkbox" oncommand="ticketDialog.onCommandEndDate(event)"/> 
+          <datepicker id="end-date-box" type="popup" observes="endDateBroadcast"/> 
+        </hbox>
+      </row>
+
+      <row align="center">
+        <label control="estimated-hours-box" value="&ticket-dialog.estimated-hours;:"/>
+        <hbox align="center">
+          <textbox id="estimated-hours-box" style="width: 4.0em;"/><label value="時間"/>
+        </hbox>
+      </row>
+
+      <separator class="groove" id="event-grid-basic-separator"/>
+
+      <row>
+        <label control="description-box" value="&ticket-dialog.description;:" />
+        <textbox id="description-box"
+          disable-on-readonly="true"
+          multiline="true"
+          rows="8"
+          flex="1"/>
+      </row>
+    </rows>
+  </grid>
+
+  <hbox id="progressbar" align="center" style="visibility: hidden;">
+    <spacer flex="1"/>
+    <progressmeter mode="undetermined"/>
+  </hbox>
+
+</dialog>
+

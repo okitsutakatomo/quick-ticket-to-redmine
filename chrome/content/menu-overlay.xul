@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+
+<?xml-stylesheet type="text/css" href="chrome://global/skin/global.css"?>
+<!DOCTYPE window SYSTEM "chrome://quick-ticket-to-redmine/locale/application.dtd">
+
+<overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <script type="application/javascript" src="chrome://quick-ticket-to-redmine/content/utils.js"/>
+  <script type="application/javascript" src="chrome://quick-ticket-to-redmine/content/ticket-dialog.js"/>
+
+  <stringbundleset id="stringbundleset">
+    <stringbundle id="CSBundle" src="chrome://quick-ticket-to-redmine/locale/application.properties"/> 
+  </stringbundleset>
+
+  <keyset>
+    <key id="new-ticket-key" modifiers="accel" key="T" onkeypress="ticketDialog.show(gFolderDisplay.selectedMessage);"/>
+  </keyset>
+
+  <popup id="mailContext">
+    <menuitem id="mailContext-quick-ticket-to-redmine-menu"
+      label="&contextmenu-overlay.label;"
+      accesskey="T"
+      key="new-ticket-key"
+      insertafter="mailContext-moveToFolderAgain"
+      oncommand="ticketDialog.show(gFolderDisplay.selectedMessage);"/>
+  </popup>
+
+</overlay>
+

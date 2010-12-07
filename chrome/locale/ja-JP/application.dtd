@@ -1,0 +1,27 @@
+<!ENTITY ticket-dialog.dialog-title "チケットの登録">
+<!ENTITY ticket-dialog.title "題名">
+<!ENTITY ticket-dialog.project "プロジェクト">
+<!ENTITY ticket-dialog.tracker "トラッカー">
+<!ENTITY ticket-dialog.assigned-to "担当者">
+<!ENTITY ticket-dialog.start-date "開始日">
+<!ENTITY ticket-dialog.end-date "期日">
+<!ENTITY ticket-dialog.estimated-hours "予定工数">
+<!ENTITY ticket-dialog.description "説明">
+<!ENTITY ticket-dialog.accept "登録する">
+<!ENTITY ticket-dialog.cancel "キャンセル">
+<!ENTITY contextmenu-overlay.label "メッセージをRedmineに登録">
+<!ENTITY error-prompt.title "エラーが発生しました">
+<!ENTITY error-prompt.details "詳細...">
+<!ENTITY error-prompt.description "説明">
+<!ENTITY ticket-done-dialog.title "チケットが登録されました">
+<!ENTITY ticket-done-dialog.label "チケットが登録されました。">
+<!ENTITY prefwindow.title "設定">
+<!ENTITY prefwindow.url.label "RedmineURLの設定">
+<!ENTITY prefwindow.url.urllabel "RedmineURL">
+<!ENTITY prefwindow.url.notice "*事前に、Redmine側の「管理」→「認証」 から、「RESTによるWebサービスを有効にする」にチェックを入れてください。">
+<!ENTITY prefwindow.url.example "(例: http://example.com:9000/)">
+<!ENTITY prefwindow.auth.label "認証方式の選択">
+<!ENTITY prefwindow.auth.apilabel "APIアクセスキーを利用する(現在利用できません)">
+<!ENTITY prefwindow.auto.example "(例: f2adea81f33d1461e9d9db420e9081b8028a6220)">
+<!ENTITY prefwindow.auth.basiclabel "Basic認証（ログインID/パスワード）を利用する">
+

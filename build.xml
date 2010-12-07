@@ -1,0 +1,166 @@
+<?xml version="1.0"?>
+<project name="extension packager" default="xpi" basedir=".">
+  <property name="src.dir" value="."/>
+  <property name="temp.dir" value="temp"/>
+
+  <!-- you can override default config with build.config file -->
+  <target name="-loadconfig-">
+    <available file="build.config" property="build.config.exists"/>
+  </target>
+  <target name="loadconfig" depends="-loadconfig-" if="build.config.exists">
+    <loadproperties srcfile="build.config"/>
+  </target>
+
+
+  <target name="-parse-">
+    <mkdir dir="${temp.dir}"/>
+    <echo file="${temp.dir}/install.rdf.xsl"><![CDATA[<?xml version="1.0"?>
+      <!-- generate build config properties file from install.rdd -->	
+      <stylesheet xmlns="http://www.w3.org/1999/XSL/Transform"
+        xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+        xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+        xmlns:em="http://www.mozilla.org/2004/em-rdf#">
+        <output method="text" omit-xml-declaration="yes"/>
+
+        <template match="/">
+          <apply-templates select="/rdf:RDF/rdf:Description/em:*"/>
+        </template>
+
+        <template match="/rdf:RDF/rdf:Description/em:*">
+          <if test="text() != ''">
+            <text>install.rdf.</text>
+            <value-of select="local-name()"/>
+            <text>		= </text>
+            <value-of select="."/>
+            <text>&#10;</text>
+          </if>
+        </template>
+
+        <!-- ignore targetApplication part -->
+        <template match="/rdf:RDF/rdf:Description/em:targetApplication"/>
+    </stylesheet>]]></echo>
+  </target>
+  <target name="parse" depends="-parse-" description="parse install.rdf to load config">
+    <!-- load extension info from install.rdf -->
+    <xslt style="${temp.dir}/install.rdf.xsl"
+      in="${src.dir}/install.rdf" out="${temp.dir}/install.rdf.properties">
+      <outputproperty name="method" value="xml"/>
+    </xslt>
+    <loadproperties srcfile="${temp.dir}/install.rdf.properties">
+      <filterchain><escapeunicode/></filterchain>
+    </loadproperties>
+    <property name="package.version" value="${install.rdf.version}"/>
+
+    <!-- load package name from chrom.manifest -->
+    <loadproperties srcfile="${src.dir}/chrome.manifest">
+      <filterchain>
+        <linecontainsregexp>
+          <regexp pattern="^content\s+([a-zA-Z.-]+)\s+(?:jar:)?chrome/.+"/>
+        </linecontainsregexp>
+        <replaceregex
+          pattern="^content\s+([a-zA-Z.-]+)\s+(?:jar:)?chrome/.+"
+          replace="package.name = \1"/>
+      </filterchain>
+    </loadproperties>
+  </target>
+
+  <target name="config" depends="loadconfig, parse">
+    <property name="temp.jar.dir"	value="${temp.dir}/jar"/>
+    <property name="temp.xpi.dir"	value="${temp.dir}/xpi"/>
+    <property name="src.chrome.dir"	value="${src.dir}/chrome"/>
+    <property name="jar.filename"	value="${package.name}.jar"/>
+    <property name="jar.includes"	value="**"/>
+    <property name="jar.excludes"	value="${jar.filename}, **/#*#, **/*~"/>
+    <property name="xpi.basedir"	value="."/>
+    <property name="xpi.filename"	value="${package.name}-${package.version}.xpi"/>
+    <property name="xpi.includes"	value="**"/>
+    <property name="xpi.excludes"	value="build.*, ${xpi.filename}, ${package.name}-${package.version}/, chrome/content/, chrome/locale/, chrome/skin/, ${temp.dir}/, **/#*#, **/*~"/>
+    <!-- <echoproperties/> -->
+  </target>
+
+  <macrodef name="update-zip">
+    <attribute name="dir"/>
+    <attribute name="destfile"/>
+    <attribute name="includes"	default="**"/>
+    <attribute name="excludes"	default=""/>
+    <attribute name="prefix"	default=""/>
+    <attribute name="filemode"	default="644"/>
+    <attribute name="dirmode"	default="755"/>
+    <sequential>
+      <zip taskname="update-zip" destfile="@{destfile}"
+        compress="false" update="true" duplicate="add">
+        <zipfileset dir="@{dir}" prefix="@{prefix}"
+          includes="@{includes}" excludes="@{excludes}"
+          filemode="@{filemode}" dirmode="@{dirmode}"/>
+      </zip>
+    </sequential>
+  </macrodef>
+
+  <target name="jar" depends="config" description="generate jar package">
+    <delete dir="${temp.jar.dir}"/>
+    <!-- chrome/content/ -> chrome/content/extname/ -->
+    <copy todir="${temp.jar.dir}/content/${package.name}">
+      <fileset dir="${src.chrome.dir}/content"
+        includes="${jar.includes}" excludes="${jar.excludes}"/>
+    </copy>
+    <!-- chrome/locale/*/ -> chrome/locale/*/extname/ -->
+    <copy todir="${temp.jar.dir}/locale" failonerror="false">
+      <fileset dir="${src.chrome.dir}/locale"
+        includes="${jar.includes}" excludes="${jar.excludes}"/>
+      <regexpmapper handledirsep="true"
+        from="^([^/]*)(/.*)$$" to="\1/${package.name}\2"/>
+    </copy>
+    <!-- chrome/skin/classic/ -> chrome/skin/classic/extname/ -->
+    <copy todir="${temp.jar.dir}/skin/classic/${package.name}" failonerror="false">
+      <fileset dir="${src.chrome.dir}/skin/classic"
+        includes="${jar.includes}" excludes="${jar.excludes}"/>
+    </copy>
+    <!-- chrome/skin/ -> chrome/skin/classic/extname/ -->
+    <copy todir="${temp.jar.dir}/skin/classic/${package.name}" failonerror="false">
+      <fileset dir="${src.chrome.dir}/skin"
+        includes="${jar.includes}" excludes="classic/, ${jar.excludes}"/>
+    </copy>
+    <delete file="${temp.xpi.dir}/chrome/${jar.filename}"/>
+    <mkdir dir="${temp.xpi.dir}/chrome"/>
+    <zip taskname="create-jar" destfile="${temp.xpi.dir}/chrome/${jar.filename}"
+      compress="false" update="false" whenempty="create">
+      <zipfileset dir="${temp.jar.dir}"/> 
+    </zip>
+  </target>
+
+  <target name="manifest" depends="config" description="convert chrome.manifest">
+    <copy file="${src.dir}/chrome.manifest" overwrite="true"
+      tofile="${temp.xpi.dir}/chrome.manifest">
+      <filterchain>
+        <replaceregex
+          pattern="^(content\s+${package.name}\s+)chrome/content/"
+          replace="\1jar:chrome/${jar.filename}!/content/${package.name}/"/>
+        <replaceregex
+          pattern="^(locale\s+${package.name}\s+[a-zA-Z-]+\s+)chrome/locale/([a-zA-Z-]+/)"
+          replace="\1jar:chrome/${jar.filename}!/locale/\2${package.name}/"/>
+        <replaceregex
+          pattern="^(skin\s+${package.name}\s+[0-9a-zA-Z/.-]+\s+)chrome/skin/([a-zA-Z-]+/)"
+          replace="\1jar:chrome/${jar.filename}!/skin/\2${package.name}/"/>
+        <replaceregex
+          pattern="^(skin\s+${package.name}\s+[0-9a-zA-Z/.-]+\s+)chrome/skin/"
+          replace="\1jar:chrome/${jar.filename}!/skin/classic/${package.name}/"/>
+      </filterchain>
+    </copy>
+  </target>
+
+  <target name="xpi" depends="jar, manifest" description="generate xpi package">
+    <delete file="${xpi.filename}"/>
+    <zip taskname="xpi package" destfile="${xpi.filename}">
+      <zipfileset dir="${src.dir}/${xpi.basedir}" filemode="644" dirmode="755"
+        includes="${xpi.includes}" excludes="${xpi.excludes}"/>
+    </zip>
+    <zip taskname="xpi package" destfile="${xpi.filename}" update="true">
+      <zipfileset dir="${temp.xpi.dir}" filemode="644" dirmode="755"
+        includes="chrome.manifest, chrome/${jar.filename}"/>
+    </zip>
+  </target>
+
+  <target name="clean" description="remove temp directory">
+    <delete dir="${temp.dir}"/>
+  </target>
+</project>

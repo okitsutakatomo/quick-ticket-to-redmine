@@ -1,0 +1,28 @@
+<!ENTITY ticket-dialog.dialog-title "New Ticket">
+<!ENTITY ticket-dialog.title "Title">
+<!ENTITY ticket-dialog.project "Project">
+<!ENTITY ticket-dialog.tracker "Tracker">
+<!ENTITY ticket-dialog.assigned-to "Assignee">
+<!ENTITY ticket-dialog.start-date "Start">
+<!ENTITY ticket-dialog.end-date "Due date">
+<!ENTITY ticket-dialog.estimated-hours "Estimate time">
+<!ENTITY ticket-dialog.description "Description">
+<!ENTITY ticket-dialog.accept "Create">
+<!ENTITY ticket-dialog.cancel "Cancel">
+<!ENTITY contextmenu-overlay.label "Register this message with Redmine">
+<!ENTITY error-prompt.title "Error...">
+<!ENTITY error-prompt.details "Detail...">
+<!ENTITY error-prompt.description "Description">
+<!ENTITY ticket-done-dialog.title "Register done">
+<!ENTITY ticket-done-dialog.label "Register done.">
+<!ENTITY prefwindow.title "Settings">
+<!ENTITY prefwindow.url.label "Redmine settings">
+<!ENTITY prefwindow.url.urllabel "RedmineURL">
+<!ENTITY prefwindow.url.notice "* Before use, Check-off [Administration]->[Settings]->[Authentication]->[Enable REST web service] on Redmine">
+<!ENTITY prefwindow.url.example "(ex: http://example.com:9000/)">
+<!ENTITY prefwindow.auth.label "Authentication Type">
+<!ENTITY prefwindow.auth.apilabel "Use API Access key (do not use)">
+<!ENTITY prefwindow.auto.example "(ex: f2adea81f33d1461e9d9db420e9081b8028a6220)">
+<!ENTITY prefwindow.auth.basiclabel "Use Basic Authentication (loginid / password)">
+
+

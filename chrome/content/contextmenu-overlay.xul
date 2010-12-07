@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+
+<?xml-stylesheet type="text/css" href="chrome://global/skin/global.css"?>
+<!DOCTYPE window SYSTEM "chrome://quick-ticket-to-redmine/locale/application.dtd">
+
+<overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <script type="application/javascript" src="chrome://quick-ticket-to-redmine/content/utils.js"/>
+  <script type="application/javascript" src="chrome://quick-ticket-to-redmine/content/ticket-dialog.js"/>
+
+  <stringbundleset id="stringbundleset">
+    <stringbundle id="CSBundle" src="chrome://quick-ticket-to-redmine/locale/application.properties"/> 
+  </stringbundleset>
+
+  <keyset id="mailKeys">
+    <keyset id="tasksKeys">
+      <key id="new-ticket-key" modifiers="accel,shift" key="l" oncommand="ticketDialog.show(gFolderDisplay.selectedMessage);"/>
+    </keyset>
+  </keyset>
+
+  <menubar id="mail-menubar">
+    <menu id="messageMenu">
+      <menupopup id="messageMenuPopup">
+        <menuitem id="newRedmineTicket"
+          label="&contextmenu-overlay.label;"
+          accesskey="L"
+          key="new-ticket-key"
+          oncommand="ticketDialog.show(gFolderDisplay.selectedMessage);"
+          insertbefore="messageMenuAfterMarkSeparator"/>
+      </menupopup>
+    </menu>
+  </menubar>
+
+  <popup id="mailContext">
+    <menuitem id="mailContext-quick-ticket-to-redmine-menu"
+      label="&contextmenu-overlay.label;"
+      accesskey="L"
+      key="new-ticket-key"
+      insertafter="mailContext-moveToFolderAgain"
+      oncommand="ticketDialog.show(gFolderDisplay.selectedMessage);"/>
+  </popup>
+
+</overlay>

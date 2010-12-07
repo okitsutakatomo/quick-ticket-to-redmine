@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?xml-stylesheet type="text/css" href="chrome://global/skin/global.css"?>
+<!DOCTYPE window SYSTEM "chrome://quick-ticket-to-redmine/locale/application.dtd">
+
+<dialog id="ticket-done-dialog"
+  title="&ticket-done-dialog.title;"
+  onload="ticketDoneDialog.onLoad()"
+  buttons="accept"
+  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <!-- Javascript includes -->
+  <script type="application/javascript" src="chrome://global/content/nsUserSettings.js"/>
+  <script type="application/javascript" src="chrome://quick-ticket-to-redmine/content/utils.js"/>
+  <script type="application/javascript" src="chrome://quick-ticket-to-redmine/content/ticket-done-dialog.js"/>
+  <script type="application/javascript" src="chrome://global/content/contentAreaUtils.js"/>
+
+  <stringbundleset id="stringbundleset">
+    <stringbundle id="CSBundle" src="chrome://quick-ticket-to-redmine/locale/application.properties"/> 
+  </stringbundleset>
+
+  <vbox>
+    <label value="&ticket-done-dialog.label;"/>
+    <spacer style="height: 2.0em;"/>
+    <label id="link_label" class="text-link" value=""
+      onclick="ticketDoneDialog.go(event);"
+      />
+  </vbox>
+
+</dialog>
+
+

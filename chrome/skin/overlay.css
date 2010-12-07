@@ -1,0 +1,22 @@
+/* This is just an example.  You shouldn't do this. */
+#quick-ticket-to-redmine-hello
+{
+  color: red ! important;
+}
+#quick-ticket-to-redmine-toolbar-button
+{
+  list-style-image: url("chrome://quick-ticket-to-redmine/skin/toolbar-button.png");
+  -moz-image-region: rect(0px 24px 24px 0px);
+}
+#quick-ticket-to-redmine-toolbar-button:hover
+{
+  -moz-image-region: rect(24px 24px 48px  0px);
+}
+[iconsize="small"] #quick-ticket-to-redmine-toolbar-button
+{
+  -moz-image-region: rect( 0px 40px 16px 24px);
+}
+[iconsize="small"] #quick-ticket-to-redmine-toolbar-button:hover
+{
+  -moz-image-region: rect(24px 40px 40px 24px);
+}
