@@ -1,0 +1,4 @@
+Build
+
+>cd PROJECT_ROOT
+>ant xpi
