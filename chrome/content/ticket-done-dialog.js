@@ -1,19 +1,19 @@
-function TicketDoneDialog() {
-  this.initialize.apply(this, arguments);
+function TicketDoneDialog(...args) {
+  this.initialize(...args);
 }
 
 TicketDoneDialog.prototype = {
 
   dialogurl:"chrome://quick-ticket-to-redmine/content/ticket-done-dialog.xul",
 
-  initialize: function() {
+  initialize() {
   },
 
-  show: function(args) {
+  show(args) {
           window.openDialog(this.dialogurl, "_blank", "chrome,titlebar,modal,resizable", args);
         },
 
-  onLoad: function() {
+  onLoad() {
             var href = window.arguments[0];
 
             if (href) {
@@ -36,7 +36,7 @@ TicketDoneDialog.prototype = {
             document.getElementById("ticket-done-dialog").getButton("accept").focus();
           },
 
-  go: function(event) {
+  go(event) {
         openURL(event.target.getAttribute("go"));
         window.close();
       },

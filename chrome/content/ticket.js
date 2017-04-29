@@ -1,8 +1,8 @@
-function Ticket() {
-  this.initialize.apply(this, arguments);
+function Ticket(...args) {
+  this.initialize(...args);
 }
 Ticket.prototype = {
-  initialize: function(nsIMsgDBHdr) {
+  initialize(nsIMsgDBHdr) {
                 this.title = null;
                 this.description = null;
                 this.project_id = null;
@@ -43,7 +43,7 @@ Ticket.prototype = {
                 }
               },
 
-  serializeToString: function() {
+  serializeToString() {
 
                        //  <?xml version="1.0"?>
                        //  <issue>

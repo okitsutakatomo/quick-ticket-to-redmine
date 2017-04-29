@@ -1,5 +1,5 @@
-function TicketDialog() {
-  this.initialize.apply(this, arguments);
+function TicketDialog(...args) {
+  this.initialize(...args);
 }
 
 TicketDialog.prototype = {
@@ -11,14 +11,14 @@ TicketDialog.prototype = {
   authmethod: 1,
   dialogurl:"chrome://quick-ticket-to-redmine/content/ticket-dialog.xul",
 
-  initialize: function() {
+  initialize() {
   },
 
-  show: function(args) {
+  show(args) {
           window.openDialog(this.dialogurl, "_blank", "chrome,titlebar,resizable", args);
         },
 
-  onLoad: function() {
+  onLoad() {
 
             try {
               //引数からメール情報を取得する 
@@ -77,7 +77,7 @@ TicketDialog.prototype = {
             }
           },
 
-  getProjectList: function() {
+  getProjectList() {
 
                     var self = this;
 
@@ -102,7 +102,7 @@ TicketDialog.prototype = {
                     } 
 
                     request.open("GET", url, true);
-                    request.onreadystatechange = function (aEvt) {
+                    request.onreadystatechange = aEvt => {
                       if (request.readyState == 4) {
                         if(request.status == 200) {
                           var projectsXML = request.responseXML;
@@ -149,7 +149,7 @@ TicketDialog.prototype = {
                     request.send(null);
                   },
 
-  getTrackerAndAssignedList: function() {
+  getTrackerAndAssignedList() {
 
                                var self = this;
 
@@ -169,7 +169,7 @@ TicketDialog.prototype = {
 
 
                                request.open("GET", url, true);
-                               request.onreadystatechange = function (aEvt) {
+                               request.onreadystatechange = aEvt => {
                                  if (request.readyState == 4) {
                                    if(request.status == 200) {
                                      var xml = request.responseXML;
@@ -247,7 +247,7 @@ TicketDialog.prototype = {
                                request.send(null);
                              },
 
-  createIssue: function(ticket) {
+  createIssue(ticket) {
 
                  var self = this;
 
@@ -278,7 +278,7 @@ TicketDialog.prototype = {
 
                  request.open("POST", url, true);
                  request.setRequestHeader("Content-Type", "application/xml; charset=utf-8");
-                 request.onreadystatechange = function (aEvt) {
+                 request.onreadystatechange = aEvt => {
                    if (request.readyState == 1){
                      //プログレスバーを表示
                      self.showProgress();
@@ -312,7 +312,7 @@ TicketDialog.prototype = {
                  request.send(ticket.serializeToString());
                },
 
-  onAccept: function() {
+  onAccept() {
 
               //チケットオブジェクトにデータを格納する。
               var ticket = new Ticket(); 
@@ -349,41 +349,41 @@ TicketDialog.prototype = {
               return false;
             },
 
-  onCancel: function() {
+  onCancel() {
               return true;
             },
 
-  showProgress: function() {
+  showProgress() {
                   document.getElementById("progressbar").style.visibility = "visible";
                 },
 
-  hideProgress: function() {
+  hideProgress() {
                   document.getElementById("progressbar").style.visibility = "hidden";
                 },
 
-  saveRecentProjectId: function(id) {
+  saveRecentProjectId(id) {
                          nsPreferences.setIntPref("extensions.quick-ticket-to-redmine.recentprojectid", id);
                        },
 
-  loadRecentProjectId: function() {
+  loadRecentProjectId() {
                          return nsPreferences.getIntPref("extensions.quick-ticket-to-redmine.recentprojectid");
                        },
-  saveRecentTrackerId: function(id) {
+  saveRecentTrackerId(id) {
                          nsPreferences.setIntPref("extensions.quick-ticket-to-redmine.recenttrackerid", id);
                        },
 
-  loadRecentTrackerId: function() {
+  loadRecentTrackerId() {
                          return nsPreferences.getIntPref("extensions.quick-ticket-to-redmine.recenttrackerid");
                        },
-  saveRecentAssignedToId: function(id) {
+  saveRecentAssignedToId(id) {
                             nsPreferences.setIntPref("extensions.quick-ticket-to-redmine.recentassignedtoid", id);
                           },
 
-  loadRecentAssignedToId: function() {
+  loadRecentAssignedToId() {
                             return nsPreferences.getIntPref("extensions.quick-ticket-to-redmine.recentassignedtoid");
                           },
 
-  onCommandEndDate: function(event) {
+  onCommandEndDate(event) {
                       var target = event.target;
                       if(target.checked){
                         document.getElementById("endDateBroadcast").removeAttribute("disabled");
@@ -392,7 +392,7 @@ TicketDialog.prototype = {
                       }
                     },
 
-  showTicketDoneDialog: function(args) {
+  showTicketDoneDialog(args) {
                           window.openDialog(this.dialogurl, "_blank", "chrome,titlebar,resizable", args);
                         },
 };
