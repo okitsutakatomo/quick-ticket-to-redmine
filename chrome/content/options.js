@@ -6,24 +6,24 @@ var PREF_CONST = {
 //pref("extensions.quick-ticket-to-redmine.redmineurlpref", "http://example.com:9000/");
 //pref("extensions.quick-ticket-to-redmine.redmineacceskeypref", "");
 //pref("extensions.quick-ticket-to-redmine.authmethod", 1);
-function Options() {
-  this.initialize.apply(this, arguments);
+function Options(...args) {
+  this.initialize(...args);
 }
 
 Options.prototype = {
 
   httprealm: "Redmine API",
 
-  initialize: function() {
+  initialize() {
   },
 
-  onLoad: function() {
+  onLoad() {
 
             //ラジオボタンにイベントを設定
             //※本イベントはradiogroupに設定してあるため、
             //radiogroupに含まれるすべてのradioコンポーネントにイベントが設定される。
             var radiogroup = document.getElementById("auth-radiogroup");
-            radiogroup.addEventListener("RadioStateChange", function(event) { 
+            radiogroup.addEventListener("RadioStateChange", event => { 
               options.toggleAuthSettingView(event.target); 
             },false);
 
@@ -37,7 +37,7 @@ Options.prototype = {
             }
           },
 
-  toggleAuthSettingView: function(target) {
+  toggleAuthSettingView(target) {
                            //認証設定の画面を切り替える
                            if(target.getAttribute("id") === "api-radio") {
                              if(target.selected) {
@@ -54,7 +54,7 @@ Options.prototype = {
                            }
                          },
 
-  doOK: function() {
+  doOK() {
 
           var url = document.getElementById("redmineurl_textbox").value;
           nsPreferences.setUnicharPref(PREF_CONST.REDMINE_URL, url);
@@ -68,7 +68,7 @@ Options.prototype = {
           return true;
         },
 
-  doCancel: function(){
+  doCancel() {
               return true;
             }
 
